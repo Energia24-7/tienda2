@@ -2,140 +2,141 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>⚡ Tienda Eléctrica - Productos</title>
-  <meta name="description" content="Venta de materiales eléctricos, iluminación y accesorios técnicos en Ecuador.">
+  <title>⚡ Tienda Energía 24/7 | Productos Eléctricos en Ecuador</title>
+  <meta name="description" content="Compra materiales eléctricos, iluminación, energía solar y accesorios técnicos en Ecuador. Envíos a todo el país.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap CSS -->
+  <!-- SEO / Open Graph -->
+  <meta property="og:title" content="Tienda Energía 24/7 - Productos Eléctricos">
+  <meta property="og:description" content="Materiales eléctricos, iluminación, energía solar y más.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://energia24-7.github.io/tienda2/">
+
+  <!-- Schema JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Tienda Energía 24/7",
+    "image": "https://energia24-7.github.io/tienda2/logo.png",
+    "url": "https://energia24-7.github.io/tienda2/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Quito",
+      "addressCountry": "Ecuador"
+    },
+    "openingHours": "Mo-Fr 08:00-18:00",
+    "telephone": "+593998879869"
+  }
+  </script>
+
+  <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.png" type="image/png">
 
-  <!-- Papa Parse and Script -->
+  <!-- PapaParse + Script -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="script.js" defer></script>
-
-  <!-- Ajustes responsive para móviles -->
-  <style>
-    @media (max-width: 991px) {
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-        padding: 10px;
-      }
-      .content {
-        margin-left: 0;
-        padding: 10px;
-      }
-    }
-    .cart-badge {
-      background-color: red;
-      color: white;
-      border-radius: 50%;
-      padding: 2px 8px;
-      font-size: 0.8rem;
-      margin-left: 4px;
-    }
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      color: white;
-      border-radius: 50%;
-      width: 55px;
-      height: 55px;
-      text-align: center;
-      font-size: 28px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-    }
-    .whatsapp-float i {
-      line-height: 55px;
-    }
-  </style>
 </head>
 
 <body>
-
-  <!-- Menú Superior -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="index.html">
-        <img src="logo.png" alt="Logo Tienda Eléctrica" style="height: 35px;" class="me-2">
-        <span>Tienda Eléctrica</span>
-      </a>
-
+    <div class="container">
+      <a class="navbar-brand text-warning fw-bold" href="index.html">⚡ Energía 24/7</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="tablas.html">Tablas de cálculo</a></li>
-          <li class="nav-item"><a class="nav-link" href="normas.html">Normas y estándares</a></li>
-          <li class="nav-item"><a class="nav-link" href="info.html">Información técnica</a></li>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="ventas.html">Ventas</a></li>
+          <li class="nav-item"><a class="nav-link" href="bienes.html">Bienes</a></li>
           <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
         </ul>
-
-        <div class="d-flex flex-column flex-lg-row align-items-lg-center text-white">
-          <a href="cart.html" class="btn btn-outline-light me-lg-3 mb-2 mb-lg-0">
-            🛒 Carrito <span id="cart-count" class="cart-badge">0</span>
-          </a>
-          <div class="text-end small">
-            <div>📞 0998879869</div>
-            <div>✉️ fastindustrialsupply@gmail.com</div>
-            <div>📍 Nayón, Quito - Ecuador</div>
-          </div>
-        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Contenedor principal -->
-  <div class="container-fluid my-4">
-    <div class="row">
-      <!-- Filtro lateral -->
-      <aside class="col-lg-3 sidebar bg-light p-3 rounded">
-        <h5>Filtrar</h5>
-        <hr>
-        <div>
-          <h6>Categoría</h6>
-          <select id="filter-category" class="form-select mb-3">
-            <option value="all">Todas</option>
-          </select>
-        </div>
-        <div>
-          <h6>Marca</h6>
-          <select id="filter-brand" class="form-select">
-            <option value="all">Todas</option>
-          </select>
-        </div>
-      </aside>
-
-      <!-- Sección de productos -->
-      <main class="col-lg-9 content">
-        <h2 class="mb-4 text-center">Nuestros Productos</h2>
-        <div id="productos-container" class="row g-4 justify-content-center"></div>
-      </main>
+  <!-- Filters -->
+  <div class="container my-4">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <select id="filter-category" class="form-select">
+          <option value="all">Todas las categorías</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select id="filter-brand" class="form-select">
+          <option value="all">Todas las marcas</option>
+        </select>
+      </div>
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- Products -->
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Nuestros Productos</h2>
+    <div id="productos-container" class="row g-4 justify-content-center"></div>
+  </div>
+
   <footer class="bg-dark text-white text-center py-3">
     <p>📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
   </footer>
 
-  <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/593998879869" class="whatsapp-float" target="_blank">
-    <i class="bi bi-whatsapp"></i>
-  </a>
+  <script>
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pub?output=csv";
 
-  <!-- Bootstrap JS -->
+    Papa.parse(sheetUrl, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const data = results.data.filter(p => (p.Estado || "").toLowerCase() === "activo");
+        const container = document.getElementById("productos-container");
+        const catSelect = document.getElementById("filter-category");
+        const brandSelect = document.getElementById("filter-brand");
+
+        const categories = [...new Set(data.map(p => p.Categoria).filter(Boolean))];
+        const brands = [...new Set(data.map(p => p.Marca).filter(Boolean))];
+
+        categories.forEach(c => catSelect.innerHTML += `<option value="${c}">${c}</option>`);
+        brands.forEach(b => brandSelect.innerHTML += `<option value="${b}">${b}</option>`);
+
+        function renderProducts() {
+          const catFilter = catSelect.value;
+          const brandFilter = brandSelect.value;
+
+          const filtered = data.filter(p => 
+            (catFilter === "all" || p.Categoria === catFilter) &&
+            (brandFilter === "all" || p.Marca === brandFilter)
+          );
+
+          container.innerHTML = filtered.map(p => {
+            const slug = `${(p.Marca || "").toLowerCase().replace(/\s+/g, "-")}-${(p.Modelo || "").toLowerCase().replace(/\s+/g, "-")}`;
+            return `
+              <div class="col-md-3 col-sm-6">
+                <div class="card h-100 shadow-sm">
+                  <img src="${p.Imagen || 'no-image.png'}" class="card-img-top" alt="${p.Nombre}">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">${p.Nombre}</h5>
+                    <p class="text-muted">${p.Marca || ''} ${p.Modelo || ''}</p>
+                    <p class="fw-bold text-success">$${p.Precio}</p>
+                    <a href="producto.html?item=${slug}" class="btn btn-outline-primary w-100">Ver producto</a>
+                  </div>
+                </div>
+              </div>`;
+          }).join('') || `<p class="text-center text-muted">No se encontraron productos.</p>`;
+        }
+
+        catSelect.addEventListener("change", renderProducts);
+        brandSelect.addEventListener("change", renderProducts);
+
+        renderProducts();
+      }
+    });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
