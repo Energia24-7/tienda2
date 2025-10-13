@@ -14,22 +14,60 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
+
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand text-warning fw-bold" href="index.html">⚡ Energía 24/7</a>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="logo.png" alt="Logo Energía 24/7" class="logo-img me-2">
+        <div>
+          <span class="fw-bold text-warning">Energía 24/7</span><br>
+          <small class="text-light tagline">Web industrial especializada en exceso de inventario y presupuestación</small>
+        </div>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
-  <div class="container my-5" id="product-container">
+  <!-- CONTENIDO -->
+  <div class="container my-5 pt-5" id="product-container">
     <h2 class="text-center mb-4">Cargando producto...</h2>
   </div>
 
-  <footer class="bg-dark text-white text-center py-3">
-    <p>📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <p class="mb-1">📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
+    <p class="text-secondary small mb-0">&copy; 2025 Energía 24/7. Todos los derechos reservados.</p>
   </footer>
 
   <script>
+    // Desaparecer el menú al hacer scroll
+    let lastScrollTop = 0;
+    const navbar = document.querySelector('.navbar');
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+      if (currentScroll > lastScrollTop && currentScroll > 80) {
+        navbar.style.top = '-100px';
+      } else {
+        navbar.style.top = '0';
+      }
+      lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    });
+
+    // Cargar producto desde Google Sheets
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4CQDWoqsX_jruiEkAQ5ONE_BkXKYl0Jb04_8nmZtyi4SxLN2AyqxB9a-_g3NfFr3IrbRt4VLjcOeP/pub?output=csv";
     const params = new URLSearchParams(window.location.search);
     const itemSlug = params.get("item");
@@ -66,7 +104,7 @@
                 <img src="${product.Imagen || 'no-image.png'}" class="img-fluid rounded shadow-sm" alt="${product.Nombre}">
               </div>
               <div class="col-md-6">
-                <h2>${product.Nombre}</h2>
+                <h2 class="fw-bold">${product.Nombre}</h2>
                 <p class="text-muted">${product.Marca || ''} ${product.Modelo || ''}</p>
                 <p><strong>Categoría:</strong> ${product.Categoria || 'N/A'}</p>
                 <p><strong>Precio:</strong> <span class="text-success fw-bold">$${product.Precio}</span></p>
