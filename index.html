@@ -6,20 +6,15 @@
   <meta name="description" content="Compra materiales eléctricos, iluminación, energía solar y accesorios técnicos en Ecuador. Envíos a todo el país.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Canonical URL -->
+  <!-- Canonical URL -->
   <link rel="canonical" href="https://energia247.online/">
 
   <!-- Favicon -->
   <link rel="icon" href="favicon.png" type="image/png">
 
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://energia247.online/">
-
-
   <!-- SEO / Open Graph -->
   <meta property="og:title" content="Tienda Energía 24/7 - Productos Eléctricos">
-  <meta property="og:description" content="Materiales eléctricos, protecciones, energía solar, tableros electricos y más.">
+  <meta property="og:description" content="Materiales eléctricos, protecciones, energía solar, tableros eléctricos y más.">
   <meta property="og:image" content="logo.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://energia24-7.github.io/tienda2/">
@@ -45,68 +40,148 @@
   <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Custom small responsive adjustments (moved into a valid <style> tag) -->
+  <!-- Estilos del encabezado -->
   <style>
-    /* --- Ajustes responsive para móviles --- */
+    /* Navbar fija y profesional */
+    body {
+      padding-top: 110px; /* espacio para el header fijo */
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #111, #1c1c1c);
+      border-bottom: 2px solid #00d084;
+      transition: all 0.4s ease;
+      z-index: 1030;
+    }
+
+    .navbar.shrink {
+      padding-top: 0.3rem !important;
+      padding-bottom: 0.3rem !important;
+      background: #141414;
+    }
+
+    .navbar-brand img {
+      height: 58px;
+      transition: height 0.3s ease;
+    }
+
+    .navbar.shrink .navbar-brand img {
+      height: 40px;
+    }
+
+    .navbar-brand span {
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 1.2rem;
+    }
+
+    .navbar-nav .nav-link {
+      color: #f1f1f1 !important;
+      font-weight: 500;
+      transition: all 0.2s;
+      padding: 0.5rem 1rem !important;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #00d084 !important;
+    }
+
+    .cart-badge {
+      background: #00d084;
+      border-radius: 50%;
+      padding: 2px 7px;
+      font-weight: bold;
+      margin-left: 4px;
+    }
+
+    /* Lema debajo del menú */
+    #lema {
+      background-color: #f8f9fa;
+      color: #555;
+      font-weight: 600;
+      padding: 6px 0;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+      position: fixed;
+      top: 68px;
+      width: 100%;
+      z-index: 1029;
+      transition: all 0.4s ease;
+    }
+
+    #lema.hide {
+      opacity: 0;
+      transform: translateY(-20px);
+      visibility: hidden;
+    }
+
     @media (max-width: 991px) {
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
+      .navbar-brand img {
+        height: 48px;
       }
-      .content {
-        margin-left: 0;
-        padding: 10px;
+      #lema {
+        font-size: 0.9rem;
+        top: 64px;
       }
     }
   </style>
 
-  <!-- PapaParse + Script -->
+  <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="script.js" defer></script>
 </head>
 
 <body>
-  <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">
-      <img src="logo.png" alt="Logo Tienda Eléctrica"> Tienda Eléctrica
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="servicios.html">Alquiler de equipos</a></li>
-          <li class="nav-item"><a class="nav-link" href="ventas.html">Tablas de cálculo</a></li>
-          <li class="nav-item"><a class="nav-link" href="bienes.html">Normas y estándares</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-        </ul>
-              <div class="d-flex align-items-center text-white mt-2 mt-lg-0">
-        <a href="cart.html" class="btn btn-outline-light me-3">
-          🛒 Carrito <span id="cart-count" class="cart-badge">0</span>
-        </a>
-        <div class="cart-info">
-          <div>Telf: 0998879869</div>
-          <div>Email: fastindustrialsupply@gmail.com</div>
-          <div>Nayón, Quito-Ecuador</div>
-        </div>
-      </div>
 
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top py-2">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="logo.png" alt="Logo Tienda Energía 24/7" class="me-2">
+        <span>Energía 24/7</span>
+      </a>
+
+      <!-- Botón menú móvil -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Enlaces -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto text-center">
+          <li class="nav-item"><a class="nav-link" href="servicios.html"><i class="bi bi-tools me-1"></i> Alquiler de equipos</a></li>
+          <li class="nav-item"><a class="nav-link" href="ventas.html"><i class="bi bi-calculator me-1"></i> Tablas de cálculo</a></li>
+          <li class="nav-item"><a class="nav-link" href="bienes.html"><i class="bi bi-book me-1"></i> Normas y estándares</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html"><i class="bi bi-envelope me-1"></i> Contacto</a></li>
+        </ul>
+
+        <!-- Carrito y datos -->
+        <div class="d-lg-flex align-items-center mt-3 mt-lg-0 ms-lg-3 text-center text-lg-start">
+          <a href="cart.html" class="btn btn-outline-light me-lg-3 mb-2 mb-lg-0">
+            🛒 Carrito <span id="cart-count" class="cart-badge">0</span>
+          </a>
+          <div class="text-white small lh-sm">
+            <div><i class="bi bi-telephone"></i> 0998879869</div>
+            <div><i class="bi bi-envelope"></i> fastindustrialsupply@gmail.com</div>
+            <div><i class="bi bi-geo-alt"></i> Nayón, Quito</div>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 
+  <!-- Lema -->
+  <div id="lema">
+    ⚙️ Web industrial especializada en exceso de inventario y presupuestación ⚙️
+  </div>
 
-  
-
-  <!-- Filters -->
-  <div class="container my-4">
+  <!-- Filtros -->
+  <div class="container my-5 pt-5">
     <div class="row g-3">
       <div class="col-md-3">
         <select id="filter-category" class="form-select">
@@ -124,16 +199,18 @@
     </div>
   </div>
 
-  <!-- Products -->
+  <!-- Productos -->
   <div class="container my-5">
     <h2 class="text-center mb-4">Nuestros Productos</h2>
     <div id="productos-container" class="row g-4 justify-content-center"></div>
   </div>
 
-  <footer class="bg-dark text-white text-center py-3">
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
     <p>📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
   </footer>
 
+  <!-- Script principal -->
   <script>
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4CQDWoqsX_jruiEkAQ5ONE_BkXKYl0Jb04_8nmZtyi4SxLN2AyqxB9a-_g3NfFr3IrbRt4VLjcOeP/pub?output=csv";
 
@@ -192,7 +269,31 @@
         renderProducts();
       }
     });
+
+    // Navbar y lema en scroll
+    const navbar = document.querySelector(".navbar");
+    const lema = document.getElementById("lema");
+    let lastScrollTop = 0;
+
+    window.addEventListener("scroll", () => {
+      const current = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (current > 100) {
+        navbar.classList.add("shrink");
+      } else {
+        navbar.classList.remove("shrink");
+      }
+
+      if (current > 180) {
+        lema.classList.add("hide");
+      } else {
+        lema.classList.remove("hide");
+      }
+
+      lastScrollTop = current <= 0 ? 0 : current;
+    });
   </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
