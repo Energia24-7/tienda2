@@ -1,149 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title id="page-title">Detalle del Producto | Energía 24/7</title>
+  <meta charset="UTF-8">
+  <title>Producto | Energía 24/7</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- SEO Meta -->
-  <meta id="meta-description" name="description" content="Detalle del producto solar de Energía 24/7.">
-  <meta name="keywords" content="energía solar, paneles solares, baterías, inversores, Ecuador">
+  <!-- SEO -->
+  <meta name="description" content="Detalles del producto Energía 24/7">
+  <meta property="og:title" content="Producto Energía 24/7">
   <meta property="og:type" content="product">
-  <meta property="og:title" content="Detalle del Producto | Energía 24/7">
   <meta property="og:image" content="logo.png">
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 
   <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
-  <style>
-    body { background-color: #f9fafc; }
-    .product-card {
-      background: #fff; border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-    .product-img {
-      width: 100%; max-height: 400px; object-fit: contain;
-      background: #f8f9fa;
-    }
-    .price { font-size: 1.8rem; color: #28a745; font-weight: 700; }
-    .meta-info { font-size: 0.95rem; color: #555; }
-    footer { background: #212529; color: white; padding: 15px 0; margin-top: 50px; }
-    .btn-whatsapp { background-color: #25d366; color: white; }
-    .btn-whatsapp:hover { background-color: #1ebe5c; color: white; }
-  </style>
 </head>
-
 <body>
-  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand fw-bold text-warning" href="index.html">⚡ Energía 24/7</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
-          <li class="nav-item"><a class="nav-link" href="ventas.html">Ventas</a></li>
-          <li class="nav-item"><a class="nav-link" href="bienes.html">Bienes</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-        </ul>
-      </div>
+      <a class="navbar-brand text-warning fw-bold" href="index.html">⚡ Energía 24/7</a>
     </div>
   </nav>
 
-  <!-- Product Section -->
-  <div class="container my-5">
-    <div id="product-container" class="row justify-content-center">
-      <div class="col-md-8 text-center">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Cargando...</span>
-        </div>
-        <p class="mt-3">Cargando producto...</p>
-      </div>
-    </div>
+  <div class="container my-5" id="product-container">
+    <h2 class="text-center mb-4">Cargando producto...</h2>
   </div>
 
-  <!-- Footer -->
-  <footer class="text-center">
+  <footer class="bg-dark text-white text-center py-3">
     <p>📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
   </footer>
 
   <script>
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4CQDWoqsX_jruiEkAQ5ONE_BkXKYl0Jb04_8nmZtyi4SxLN2AyqxB9a-_g3NfFr3IrbRt4VLjcOeP/pub?output=csv";
+
     const params = new URLSearchParams(window.location.search);
     const itemSlug = params.get("item");
-
-    // same slug logic as index.html
-    function toSlug(text) {
-      return (text || "")
-        .toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/[^\w-]/g, "");
-    }
 
     Papa.parse(sheetUrl, {
       download: true,
       header: true,
       complete: function(results) {
-        const rows = results.data.filter(r => (r.Estado || "").toLowerCase() === "activo");
+        const data = results.data.filter(p => (p.Estado || "").toLowerCase() === "activo");
+
+        const product = data.find(p => {
+          const slug = `${(p.Marca || "").toLowerCase().replace(/\s+/g, "-")}-${(p.Modelo || "").toLowerCase().replace(/\s+/g, "-")}`;
+          return slug === itemSlug;
+        });
+
         const container = document.getElementById("product-container");
 
-        // find by model or name slug
-        const product = rows.find(p =>
-          toSlug(p.Modelo) === itemSlug || toSlug(p.Nombre) === itemSlug
-        );
+        if (product) {
+          document.title = `${product.Nombre} | Energía 24/7`;
+          document.querySelector('meta[name="description"]').setAttribute("content", `${product.Nombre} de ${product.Marca}. Precio $${product.Precio}.`);
+          document.querySelector('meta[property="og:title"]').setAttribute("content", `${product.Nombre}`);
+          document.querySelector('meta[property="og:image"]').setAttribute("content", product.Imagen || "logo.png");
 
-        if (!product) {
           container.innerHTML = `
-            <div class="col-md-8 text-center">
-              <h4 class="text-danger">❌ Producto no encontrado</h4>
-              <p>Regrese al <a href="index.html">inicio</a> para ver otros productos.</p>
-            </div>`;
-          return;
-        }
-
-        // update SEO dynamically
-        document.title = `${product.Nombre} | Energía 24/7`;
-        document.querySelector('meta[name="description"]').setAttribute("content", product.Descripcion || "");
-        document.querySelector('meta[property="og:title"]').setAttribute("content", `${product.Nombre} | Energía 24/7`);
-        document.querySelector('meta[property="og:image"]').setAttribute("content", product.Imagen || "logo.png");
-
-        const tiempoEntrega = product.Entrega ? `<p><strong>⏱ Tiempo de entrega:</strong> ${product.Entrega}</p>` : "";
-
-        container.innerHTML = `
-          <div class="col-lg-10">
-            <div class="product-card row g-0">
-              <div class="col-md-6 p-4 d-flex align-items-center justify-content-center">
-                <img src="${product.Imagen || 'no-image.png'}" alt="${product.Nombre}" class="product-img">
+            <div class="row align-items-center">
+              <div class="col-md-6 text-center">
+                <img src="${product.Imagen || 'no-image.png'}" class="img-fluid rounded shadow-sm" alt="${product.Nombre}">
               </div>
-              <div class="col-md-6 p-4">
-                <h2 class="fw-bold mb-2">${product.Nombre}</h2>
-                <p class="meta-info mb-2">
-                  <strong>Marca:</strong> ${product.Marca || "N/A"}<br>
-                  <strong>Modelo:</strong> ${product.Modelo || "N/A"}<br>
-                  <strong>Categoría:</strong> ${product.Categoria || "N/A"}
-                </p>
-                <p class="price">$${product.Precio || "Consultar"}</p>
-                <hr>
-                <p>${product.Descripcion || "Sin descripción disponible."}</p>
-                ${tiempoEntrega}
-                <div class="mt-4 d-flex flex-wrap gap-3">
-                  <a href="https://wa.me/593998879869?text=Hola, estoy interesado en el producto: ${encodeURIComponent(product.Nombre)}" target="_blank" class="btn btn-whatsapp">
-                    <i class="bi bi-whatsapp"></i> Consultar por WhatsApp
-                  </a>
-                  <a href="index.html" class="btn btn-secondary">← Volver</a>
-                </div>
+              <div class="col-md-6">
+                <h2>${product.Nombre}</h2>
+                <p class="text-muted">${product.Marca || ''} ${product.Modelo || ''}</p>
+                <p><strong>Categoría:</strong> ${product.Categoria || 'N/A'}</p>
+                <p><strong>Precio:</strong> <span class="text-success fw-bold">$${product.Precio}</span></p>
+                <p><strong>Tiempo de entrega:</strong> ${product.Entrega || 'Consultar disponibilidad'}</p>
+                <p>${product.Descripción || ''}</p>
+                <a href="index.html" class="btn btn-outline-secondary mt-3"><i class="bi bi-arrow-left"></i> Volver</a>
               </div>
             </div>
-          </div>`;
+          `;
+        } else {
+          container.innerHTML = `<h3 class="text-center text-danger">Producto no encontrado</h3>`;
+        }
       }
     });
   </script>
