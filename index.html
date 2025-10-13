@@ -2,87 +2,95 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Producto | Energía 24/7</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Detalles del producto Energía 24/7">
-  <meta property="og:title" content="Producto Energía 24/7">
-  <meta property="og:type" content="product">
-  <meta property="og:image" content="logo.png">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Energía 24/7</title>
+  <meta name="description" content="Tienda de productos eléctricos y solares con entrega inmediata.">
+  <meta name="keywords" content="panel solar, inversor, batería, energía solar, energía 24/7">
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
+
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand text-warning fw-bold" href="index.html">⚡ Energía 24/7</a>
-    </div>
-  </nav>
+  <header>
+    <h1>Tienda Energía 24/7</h1>
+    <input type="text" id="searchInput" placeholder="Buscar producto, marca o categoría..." />
+  </header>
 
-  <div class="container my-5" id="product-container">
-    <h2 class="text-center mb-4">Cargando producto...</h2>
-  </div>
+  <main>
+    <div id="productContainer" class="product-grid"></div>
+  </main>
 
-  <footer class="bg-dark text-white text-center py-3">
-    <p>📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
+  <footer>
+    <p>© 2025 Energía 24/7 - Todos los derechos reservados</p>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
   <script>
-    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4CQDWoqsX_jruiEkAQ5ONE_BkXKYl0Jb04_8nmZtyi4SxLN2AyqxB9a-_g3NfFr3IrbRt4VLjcOeP/pub?output=csv";
-    const params = new URLSearchParams(window.location.search);
-    const itemSlug = params.get("item");
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4CQDWoqsX_jruiEkAQ5ONE_BkXKYl0Jb04_8nmZtyi4SxLN2AyqxB9a-_g3NfFr3IrbRt4VLjcOeP/pub?output=csv";
+    const container = document.getElementById("productContainer");
+    const searchInput = document.getElementById("searchInput");
+    let allProducts = [];
 
-    Papa.parse(sheetUrl, {
-      download: true,
-      header: true,
-      complete: function(results) {
-        const data = results.data.filter(p => (p.Estado || "").toLowerCase() === "activo");
-        const product = data.find(p => {
-          const slug = `${(p.Marca || "").toLowerCase().replace(/\s+/g, "-")}-${(p.Modelo || "").toLowerCase().replace(/\s+/g, "-")}`;
-          return slug === itemSlug;
-        });
+    function slugify(text) {
+      return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]+/g, "")
+        .replace(/\-\-+/g, "-");
+    }
 
-        const container = document.getElementById("product-container");
-
-        if (product) {
-          document.title = `${product.Nombre} | Energía 24/7`;
-          document.querySelector('meta[name="description"]').setAttribute("content", `${product.Nombre} de ${product.Marca}. Precio $${product.Precio}.`);
-          document.querySelector('meta[property="og:title"]').setAttribute("content", product.Nombre);
-          document.querySelector('meta[property="og:image"]').setAttribute("content", product.Imagen || "logo.png");
-
-          container.innerHTML = `
-            <nav aria-label="breadcrumb" class="mb-4">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="index.html?cat=${encodeURIComponent(product.Categoria)}">${product.Categoria || 'Categoría'}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">${product.Nombre}</li>
-              </ol>
-            </nav>
-
-            <div class="row align-items-center">
-              <div class="col-md-6 text-center">
-                <img src="${product.Imagen || 'no-image.png'}" class="img-fluid rounded shadow-sm" alt="${product.Nombre}">
-              </div>
-              <div class="col-md-6">
-                <h2>${product.Nombre}</h2>
-                <p class="text-muted">${product.Marca || ''} ${product.Modelo || ''}</p>
-                <p><strong>Categoría:</strong> ${product.Categoria || 'N/A'}</p>
-                <p><strong>Precio:</strong> <span class="text-success fw-bold">$${product.Precio}</span></p>
-                <p><strong>Tiempo de entrega:</strong> ${product.Entrega || 'Consultar disponibilidad'}</p>
-                <p>${product.Descripción || ''}</p>
-                <a href="index.html" class="btn btn-outline-secondary mt-3"><i class="bi bi-arrow-left"></i> Volver</a>
-              </div>
-            </div>
-          `;
-        } else {
-          container.innerHTML = `<h3 class="text-center text-danger">Producto no encontrado</h3>`;
-        }
+    function renderProducts(products) {
+      container.innerHTML = "";
+      if (products.length === 0) {
+        container.innerHTML = "<p>No se encontraron productos.</p>";
+        return;
       }
-    });
-  </script>
+      products.forEach(row => {
+        const nombre = row["Nombre"] || "";
+        const categoria = row["Categoria"] || "";
+        const marca = row["Marca"] || "";
+        const precio = row["Precio"] || "";
+        const imagen = row["Imagen"] || "placeholder.jpg";
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        const productHTML = `
+          <div class="product-card">
+            <img src="${imagen}" alt="${nombre}">
+            <h3>${nombre}</h3>
+            <p><strong>Marca:</strong> ${marca}</p>
+            <p><strong>Categoría:</strong> ${categoria}</p>
+            <p><strong>Precio:</strong> $${precio}</p>
+            <a href="producto.html?item=${encodeURIComponent(slugify(nombre))}" class="button">Ver más</a>
+          </div>
+        `;
+        container.innerHTML += productHTML;
+      });
+    }
+
+    function loadProducts() {
+      Papa.parse(sheetURL, {
+        download: true,
+        header: true,
+        complete: function (results) {
+          allProducts = results.data.filter(row => row["Nombre"]);
+          renderProducts(allProducts);
+        }
+      });
+    }
+
+    // 🔍 Search filter
+    searchInput.addEventListener("input", (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = allProducts.filter(p =>
+        (p["Nombre"] || "").toLowerCase().includes(term) ||
+        (p["Marca"] || "").toLowerCase().includes(term) ||
+        (p["Categoria"] || "").toLowerCase().includes(term)
+      );
+      renderProducts(filtered);
+    });
+
+    // Initial load
+    loadProducts();
+  </script>
 </body>
 </html>
