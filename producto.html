@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Detalle del Producto | Tienda Energía 24/7</title>
+  <title id="page-title">Detalle del Producto | Energía 24/7</title>
+
+  <!-- SEO Meta Tags -->
+  <meta id="meta-description" name="description" content="Detalle del producto de Energía 24/7. Sistemas solares, inversores, baterías y más.">
+  <meta name="keywords" content="energía solar, paneles solares, baterías, inversores, energía renovable, Ecuador">
+  <meta property="og:title" content="Detalle del Producto | Energía 24/7">
+  <meta property="og:description" content="Explora productos solares y soluciones energéticas de Energía 24/7.">
+  <meta property="og:type" content="product">
+  <meta property="og:image" content="logo.png">
 
   <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,44 +21,20 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
-    body {
-      background-color: #f9fafc;
-    }
+    body { background-color: #f9fafc; }
     .product-card {
-      background: #fff;
-      border-radius: 16px;
+      background: #fff; border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       overflow: hidden;
     }
     .product-img {
-      width: 100%;
-      max-height: 400px;
-      object-fit: contain;
-      background: #f8f9fa;
+      width: 100%; max-height: 400px; object-fit: contain; background: #f8f9fa;
     }
-    .price {
-      font-size: 1.8rem;
-      color: #28a745;
-      font-weight: 700;
-    }
-    .meta-info {
-      font-size: 0.95rem;
-      color: #555;
-    }
-    footer {
-      background: #212529;
-      color: white;
-      padding: 15px 0;
-      margin-top: 50px;
-    }
-    .btn-whatsapp {
-      background-color: #25d366;
-      color: white;
-    }
-    .btn-whatsapp:hover {
-      background-color: #1ebe5c;
-      color: white;
-    }
+    .price { font-size: 1.8rem; color: #28a745; font-weight: 700; }
+    .meta-info { font-size: 0.95rem; color: #555; }
+    footer { background: #212529; color: white; padding: 15px 0; margin-top: 50px; }
+    .btn-whatsapp { background-color: #25d366; color: white; }
+    .btn-whatsapp:hover { background-color: #1ebe5c; color: white; }
   </style>
 </head>
 
@@ -96,6 +80,15 @@
     const params = new URLSearchParams(window.location.search);
     const itemSlug = params.get("item");
 
+    // Function to normalize slugs
+    function toSlug(text) {
+      return (text || "")
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove accents
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]/g, "");
+    }
+
     Papa.parse(sheetUrl, {
       download: true,
       header: true,
@@ -103,21 +96,23 @@
         const data = results.data.filter(p => (p.Estado || "").toLowerCase() === "activo");
         const container = document.getElementById("product-container");
 
-        const product = data.find(p => {
-          const modeloSlug = (p.Modelo || "").toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
-          const nombreSlug = (p.Nombre || "").toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
-          return modeloSlug === itemSlug || nombreSlug === itemSlug;
-        });
+        const product = data.find(p => toSlug(p.Modelo) === itemSlug || toSlug(p.Nombre) === itemSlug);
 
         if (!product) {
           container.innerHTML = `
             <div class="col-md-8 text-center">
               <h4 class="text-danger">❌ Producto no encontrado</h4>
               <p>Regrese al <a href="index.html">inicio</a> para ver otros productos.</p>
-            </div>
-          `;
+            </div>`;
           return;
         }
+
+        // SEO meta tags dynamic update
+        document.title = `${product.Nombre} | Energía 24/7`;
+        document.querySelector('meta[name="description"]').setAttribute("content", product.Descripcion || "Producto solar disponible en Energía 24/7.");
+        document.querySelector('meta[property="og:title"]').setAttribute("content", `${product.Nombre} | Energía 24/7`);
+        document.querySelector('meta[property="og:description"]').setAttribute("content", product.Descripcion || "");
+        document.querySelector('meta[property="og:image"]').setAttribute("content", product.Imagen || "logo.png");
 
         const tiempoEntrega = product.Entrega ? `<p><strong>⏱ Tiempo de entrega:</strong> ${product.Entrega}</p>` : "";
 
@@ -142,14 +137,11 @@
                   <a href="https://wa.me/593998879869?text=Hola, estoy interesado en el producto: ${encodeURIComponent(product.Nombre)}" target="_blank" class="btn btn-whatsapp">
                     <i class="bi bi-whatsapp"></i> Consultar por WhatsApp
                   </a>
-                  <a href="index.html" class="btn btn-secondary">
-                    ← Volver
-                  </a>
+                  <a href="index.html" class="btn btn-secondary">← Volver</a>
                 </div>
               </div>
             </div>
-          </div>
-        `;
+          </div>`;
       }
     });
   </script>
