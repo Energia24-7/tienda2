@@ -1,49 +1,94 @@
 /* =====================================================
-   🔌 ESTILO GENERAL - TIENDA ENERGÍA 24/7
+   🔌 TIENDA ENERGÍA 24/7 - ESTILO PROFESIONAL
    ===================================================== */
-
 :root {
   --verde: #00d084;
-  --gris-oscuro: #1c1c1c;
+  --gris-oscuro: #1b1b1b;
   --gris-claro: #f5f5f5;
-  --texto: #333;
+  --texto: #222;
   --borde: #e0e0e0;
 }
 
+/* ---------- BASE ---------- */
 body {
-  font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
   background-color: #fafafa;
-  color: var(--texto);
   margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+  color: var(--texto);
 }
 
-/* =====================================================
-   🔹 CONTENIDO GENERAL
-   ===================================================== */
-h1, h2, h3, h4, h5 {
-  font-weight: 600;
-  color: #111;
+/* ---------- NAVBAR ---------- */
+.navbar {
+  transition: top 0.4s ease;
 }
 
-a {
-  text-decoration: none;
+.navbar-brand .logo {
+  height: 60px;
   transition: all 0.2s ease;
 }
 
-a:hover {
-  text-decoration: none;
+.navbar-brand:hover .logo {
+  transform: scale(1.05);
 }
 
-/* =====================================================
-   🔹 TARJETAS DE PRODUCTO
-   ===================================================== */
+.nav-link {
+  color: #ccc !important;
+  font-weight: 500;
+  margin: 0 6px;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--verde) !important;
+}
+
+.btn-outline-light:hover {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: #fff;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  background: linear-gradient(to bottom right, #0a0a0a, #1f1f1f);
+  color: white;
+  padding: 120px 20px 80px;
+  text-align: center;
+  border-bottom: 3px solid var(--verde);
+}
+
+.hero h1 {
+  font-size: 1.9rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+}
+
+/* ---------- BARRA DE FILTROS FIJA ---------- */
+.filter-bar {
+  background: white;
+  border-bottom: 1px solid var(--borde);
+  z-index: 999;
+}
+
+.filter-bar select,
+.filter-bar input {
+  border-radius: 10px;
+  transition: border-color 0.2s ease;
+}
+
+.filter-bar select:focus,
+.filter-bar input:focus {
+  border-color: var(--verde);
+  box-shadow: 0 0 0 0.2rem rgba(0, 208, 132, 0.25);
+}
+
+/* ---------- PRODUCTOS ---------- */
 .card {
   border: 1px solid var(--borde);
   border-radius: 14px;
-  overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: all 0.25s ease;
   background: white;
 }
 
@@ -60,19 +105,10 @@ a:hover {
 }
 
 .card-title {
-  font-size: 1.05rem;
   font-weight: 600;
   color: #111;
 }
 
-.card .btn {
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-/* =====================================================
-   🔹 BOTONES
-   ===================================================== */
 .btn-outline-primary {
   color: var(--verde);
   border-color: var(--verde);
@@ -81,93 +117,43 @@ a:hover {
 .btn-outline-primary:hover {
   background-color: var(--verde);
   color: #fff;
-  border-color: var(--verde);
 }
 
-.btn-primary {
-  background-color: var(--verde);
-  border-color: var(--verde);
+/* ---------- ANIMACIÓN FADE-IN ---------- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.6s ease forwards;
 }
 
-.btn-primary:hover {
-  background-color: #00b76f;
-  border-color: #00b76f;
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* =====================================================
-   🔹 FILTROS Y FORMULARIOS
-   ===================================================== */
-.form-select, .form-control {
-  border-radius: 10px;
-  border-color: #ddd;
-  box-shadow: none;
-  transition: border-color 0.2s ease;
-}
-
-.form-select:focus, .form-control:focus {
-  border-color: var(--verde);
-  box-shadow: 0 0 0 0.2rem rgba(0, 208, 132, 0.25);
-}
-
-/* =====================================================
-   🔹 WHATSAPP FLOAT (opcional si ya lo usas)
-   ===================================================== */
-.whatsapp-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #25d366;
-  color: white;
-  border-radius: 50%;
-  padding: 14px;
-  font-size: 28px;
-  z-index: 1000;
-  transition: transform 0.2s ease;
-}
-
-.whatsapp-float:hover {
-  transform: scale(1.08);
-}
-
-/* =====================================================
-   🔹 FOOTER
-   ===================================================== */
+/* ---------- FOOTER ---------- */
 footer {
-  background-color: var(--gris-oscuro);
+  background: var(--gris-oscuro);
   color: #eee;
-  font-size: 0.9rem;
   text-align: center;
-  padding: 20px 10px;
+  padding: 25px 10px;
   border-top: 3px solid var(--verde);
+  font-size: 0.95rem;
 }
 
-/* =====================================================
-   🔹 RESPONSIVIDAD
-   ===================================================== */
-@media (max-width: 991px) {
-  .card img {
-    height: 160px;
+/* ---------- RESPONSIVIDAD ---------- */
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 20px 60px;
   }
 
-  footer {
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .navbar-brand img {
-    height: 46px !important;
+  .hero h1 {
+    font-size: 1.5rem;
   }
 
-  .navbar-brand span {
-    font-size: 1rem !important;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-
-  .card img {
-    height: 140px;
+  .navbar-brand .logo {
+    height: 50px;
   }
 }
